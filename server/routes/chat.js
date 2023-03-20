@@ -1,25 +1,43 @@
 const express = require("express");
 const router = express.Router();
 const openai = require("../config/openai");
+const { v4: uuidv4 } = require("uuid");
+
 
 const botIdentity = process.env.BOT_IDENTITY;
 
-const messages = [
-  "Interviewer: Hi, Mike nice to meet you!\n",
-  "Mike: Hi, there!\n"
-];
+const conversations = new Map();
+
+
+// const messages = [
+//   "Interviewer: Hi, Mike nice to meet you!\n",
+//   "Mike: Hi, there!\n"
+// ];
 
 router.post("/", async (req, res) => {
-  const { message } = req.body;
+  const { message, conversationId } = req.body;
+
   if (message.length > 50) {
     return res.status(400).json({ error: "Input exceeds 50 characters" });
   }
 
-  // Add the new message from the user to the messages array
-  messages.push(`Interviewer: ${message}\n`);
+  let conversation;
+  let newConversationId = conversationId;
 
-  // Get the last 5 messages
-  const lastFiveMessages = messages.slice(-5).join("\n");
+  if (conversationId) {
+    conversation = conversations.get(conversationId);
+  } else {
+    newConversationId = uuidv4();
+    conversation = [
+      "Interviewer: Hi, Mike nice to meet you!\n",
+      "Mike: Hi, there!\n",
+    ];
+    conversations.set(newConversationId, conversation);
+  }
+
+  conversation.push(`Interviewer: ${message}\n`);
+
+  const lastFiveMessages = conversation.slice(-5).join("\n");
   const prompt = botIdentity + lastFiveMessages;
   console.log(prompt);
 
@@ -39,11 +57,11 @@ router.post("/", async (req, res) => {
       console.log("Tokens used:", tokensUsed);
 
       const systemMessage = response.data.choices[0].text.trim();
-      messages.push(systemMessage);
-      const messageWithoutRole = systemMessage.replace("Mike: ", ""); // Remove "Mike: " from the message content
+      conversation.push(systemMessage);
+      const messageWithoutRole = systemMessage.replace("Mike: ", ""); 
       
-      console.log(messageWithoutRole);
-      res.json({ content: messageWithoutRole });
+      console.log(messageWithoutRole, newConversationId);
+      res.json({ content: messageWithoutRole, conversationId: newConversationId });
     } catch (error) {
       console.error("Error handling chat request:", error);
       const errorMessage = error.response?.data?.error?.message || "An error occurred while processing your request. Please try again later.";

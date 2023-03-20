@@ -18,6 +18,7 @@ const Chat = () => {
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationId, setConversationId] = useState(null);
 
 
   const handleSendMessage = async () => {
@@ -27,10 +28,16 @@ const Chat = () => {
     setMessages([...messages, { role: 'user', content: userInput }]);
 
     try {
-      const response = await axios.post("http://localhost:4000/api/chat", { message: userInput });
+      const response = await axios.post("http://localhost:4000/api/chat", {
+      message: userInput,
+      conversationId,
+    });
       if (response.data.error) {
         alert(response.data.error);
       } else {
+        if (!conversationId) {
+          setConversationId(response.data.conversationId);
+        }
         setIsLoading(false);
         const messageContent = response.data.content;
         console.log(messageContent);
@@ -52,15 +59,6 @@ const Chat = () => {
       typeMessage(0);
       console.log(messages);
         }
-        // const response = await axios.post("http://localhost:4000/api/chat", { message: userInput });
-        // if (response.data.error) {
-        //   alert(response.data.error);
-        // } else {
-        //   setMessages((prevMessages) => [
-        //     ...prevMessages,
-        //     { role: "assistant", content: response.data.content },
-        //   ]);
-        // }
       } catch (error) {
         console.error("Error sending message:", error);
         alert("An error occurred while sending your message. Please try again later.");
@@ -112,33 +110,19 @@ const Chat = () => {
             onChange={(e) => setUserInput(e.target.value)}
           />
           {isLoading || isTyping ? (
-  <CircularProgress sx={{ marginLeft: 1 }} />
-) : (
-  <Button
-    type="button"
-    variant="contained"
-    color="primary"
-    disabled={userInput.length > 50 || userInput.length === 0 || isLoading || isTyping ? true : false}
-    onClick={handleSendMessage}
-    sx={{ marginLeft: 1 }}
-  >
-    Send
-  </Button>
-)}
-          {/* {isLoading ? (
-          <CircularProgress sx={{ marginLeft: 1 }} />
-           ) : (
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            disabled={userInput.length > 50 || userInput.length === 0 || isLoading ? true : false}
-            onClick={handleSendMessage}
-            sx={{ marginLeft: 1 }}
-          >
-            Send
-          </Button> 
-          )} */}
+            <CircularProgress sx={{ marginLeft: 1 }} />
+          ) : (
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              disabled={userInput.length > 50 || userInput.length === 0 || isLoading || isTyping ? true : false}
+              onClick={handleSendMessage}
+              sx={{ marginLeft: 1 }}
+            >
+              Send
+            </Button>
+          )}
         </Box>
         {userInput.length > 50 && (
             <Typography color="error" variant="body2" sx={{ marginTop: 1 }}>
