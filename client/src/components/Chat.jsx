@@ -52,13 +52,10 @@ const Chat = () => {
           ]);
 
           setTimeout(() => typeMessage(index + 1), 20);
-        }
-      };
-
-      setMessages((prevMessages) => [...prevMessages, { role: "assistant", content: "" }]);
-      typeMessage(0);
-      console.log(messages);
-        }
+        }};
+          setMessages((prevMessages) => [...prevMessages, { role: "assistant", content: "" }]);
+          typeMessage(0);
+      }
       } catch (error) {
         console.error("Error sending message:", error);
         alert("An error occurred while sending your message. Please try again later.");
@@ -69,13 +66,13 @@ const Chat = () => {
 
   return (
     <Container component="main" maxWidth="sm">
+      {/* {console.log("rerender")} */}
       <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          flexDirection: 'column'
         }}
       >
         <Typography component="h1" variant="h5">

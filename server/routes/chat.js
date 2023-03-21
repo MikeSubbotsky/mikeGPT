@@ -9,11 +9,6 @@ const botIdentity = process.env.BOT_IDENTITY;
 const conversations = new Map();
 
 
-// const messages = [
-//   "Interviewer: Hi, Mike nice to meet you!\n",
-//   "Mike: Hi, there!\n"
-// ];
-
 router.post("/", async (req, res) => {
   const { message, conversationId } = req.body;
 
@@ -57,11 +52,13 @@ router.post("/", async (req, res) => {
       console.log("Tokens used:", tokensUsed);
 
       const systemMessage = response.data.choices[0].text.trim();
+      console.log("System message:", systemMessage);
       conversation.push(systemMessage);
-      const messageWithoutRole = systemMessage.replace("Mike: ", ""); 
-      
-      console.log(messageWithoutRole, newConversationId);
-      res.json({ content: messageWithoutRole, conversationId: newConversationId });
+      const modifiedMessage = systemMessage.split("Mike: ")[1].trim();
+
+      //console.log(modifiedMessage, newConversationId);
+      res.json({ content: modifiedMessage, conversationId: newConversationId });
+
     } catch (error) {
       console.error("Error handling chat request:", error);
       const errorMessage = error.response?.data?.error?.message || "An error occurred while processing your request. Please try again later.";
