@@ -2,12 +2,20 @@ const express = require("express");
 const router = express.Router();
 const openai = require("../config/openai");
 const { v4: uuidv4 } = require("uuid");
+const admin = require("firebase-admin");
 
+// Initialize the Firebase Admin SDK
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS, 'base64').toString('ascii'))),
+  });
+}
+
+const db = admin.firestore();
 
 const botIdentity = process.env.BOT_IDENTITY;
 
 const conversations = new Map();
-
 
 router.post("/", async (req, res) => {
   const { message, conversationId } = req.body;
@@ -52,12 +60,21 @@ router.post("/", async (req, res) => {
       console.log("Tokens used:", tokensUsed);
 
       const systemMessage = response.data.choices[0].text.trim();
-      console.log("System message:", systemMessage);
+      //console.log("System message:", systemMessage);
+      
+      // After getting the system message
       conversation.push(systemMessage);
       const modifiedMessage = systemMessage.split("Mike: ")[1].trim();
 
-      //console.log(modifiedMessage, newConversationId);
+      // Add this block to save messages to Firestore
+      const messageRef = db.collection("messages").doc(newConversationId);
+      await messageRef.set({
+        messages: conversation,
+      }, { merge: true });
+
+      // Send the response to the client-side
       res.json({ content: modifiedMessage, conversationId: newConversationId });
+
 
     } catch (error) {
       console.error("Error handling chat request:", error);
