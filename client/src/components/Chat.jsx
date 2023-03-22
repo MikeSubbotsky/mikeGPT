@@ -28,7 +28,7 @@ const Chat = () => {
     setMessages([...messages, { role: 'user', content: userInput }]);
 
     try {
-      const response = await axios.post("http://localhost:4000/api/chat", {
+      const response = await axios.post("https://us-central1-mikegpt-interview.cloudfunctions.net/app/api/chat", {
       message: userInput,
       conversationId,
     });
