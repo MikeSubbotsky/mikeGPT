@@ -28,7 +28,7 @@ const Chat = () => {
     setMessages([...messages, { role: 'user', content: userInput }]);
 
     try {
-      const response = await axios.post("http://localhost:4000/api/chat", {
+      const response = await axios.post("https://us-central1-mikegpt-interview.cloudfunctions.net/app/api/chat", {
       message: userInput,
       conversationId,
     });
@@ -64,8 +64,21 @@ const Chat = () => {
     setIsTyping(false);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter' && !(userInput.length > 50 || userInput.length === 0 || isLoading || isTyping)) {
+      handleSendMessage();
+      event.preventDefault();
+    }
+  };
+  
+
   return (
-    <Container component="main" maxWidth="sm">
+    <Container component="main" maxWidth="sm" sx={{
+      width: '50%',
+      backgroundColor: 'rgba(173, 216, 230, 0.7)',
+      borderRadius: '8px',
+      padding: '16px',
+    }}>
       {/* {console.log("rerender")} */}
       <CssBaseline />
       <Box
@@ -105,6 +118,7 @@ const Chat = () => {
             value={userInput}
             maxLength={50}
             onChange={(e) => setUserInput(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
           {isLoading || isTyping ? (
             <CircularProgress sx={{ marginLeft: 1 }} />
