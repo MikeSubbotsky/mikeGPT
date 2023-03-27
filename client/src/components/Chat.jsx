@@ -70,79 +70,78 @@ const Chat = () => {
       event.preventDefault();
     }
   };
-  
 
-  return (
-    <Container component="main" maxWidth="sm" sx={{
-      width: '50%',
-      backgroundColor: 'rgba(173, 216, 230, 0.7)',
-      borderRadius: '8px',
-      padding: '16px',
-    }}>
-      {/* {console.log("rerender")} */}
-      <CssBaseline />
+return (
+  <Container component="main" maxWidth="sm" sx={{
+    backgroundColor: 'rgba(166, 187, 171, 0.5)',
+    borderRadius: '8px',
+    padding: '16px',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+  }}>
+    <CssBaseline />
+    <Box
+      sx={{
+        width: '100%',
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+    >
+      <Typography component="h1" variant="h5">
+        Chat with me
+      </Typography>
+      <List sx={{ maxHeight: 300, overflow: 'auto' }}>
+        {messages.map((message, index) => (
+          <ListItem key={index} sx={{ flexDirection: message.role === 'user' ? 'row-reverse' : 'row' }}>
+            <ListItemText
+              primary={message.content}
+              secondary={message.role === 'user' ? 'You' : 'Mike'}
+            />
+          </ListItem>
+        ))}
+      </List>
       <Box
+        component="form"
         sx={{
-          marginTop: 8,
+          width: '100%',
           display: 'flex',
-          flexDirection: 'column'
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: 2,
         }}
       >
-        <Typography component="h1" variant="h5">
-          Chat with me
-        </Typography>
-        <List>
-          {messages.map((message, index) => (
-            <ListItem key={index}>
-              <ListItemText
-                primary={message.content}
-                secondary={message.role === 'user' ? 'You' : 'Mike'}
-              />
-            </ListItem>
-          ))}
-        </List>
-        <Box
-          component="form"
-          sx={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 2,
-          }}
-        >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            value={userInput}
-            maxLength={50}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
-          {isLoading || isTyping ? (
-            <CircularProgress sx={{ marginLeft: 1 }} />
-          ) : (
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              disabled={userInput.length > 50 || userInput.length === 0 || isLoading || isTyping ? true : false}
-              onClick={handleSendMessage}
-              sx={{ marginLeft: 1 }}
-            >
-              Send
-            </Button>
-          )}
-        </Box>
-        {userInput.length > 50 && (
-            <Typography color="error" variant="body2" sx={{ marginTop: 1 }}>
-                50 chars max
-            </Typography>
-  )}
+        <TextField
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          value={userInput}
+          maxLength={50}
+          onChange={(e) => setUserInput(e.target.value)}
+          onKeyPress={handleKeyPress}
+        />
+        {isLoading || isTyping ? (
+          <CircularProgress sx={{ marginLeft: 1 }} />
+        ) : (
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            disabled={userInput.length > 50 || userInput.length === 0 || isLoading || isTyping ? true : false}
+            onClick={handleSendMessage}
+            sx={{ marginLeft: 1 }}
+          >
+            Send
+          </Button>
+        )}
       </Box>
-    </Container>
-  );
-};
+      {userInput.length > 50 && (
+          <Typography color="error" variant="body2" sx={{ marginTop: 1 }}>
+              50 chars max
+          </Typography>
+      )}
+          </Box>
+        </Container>
+      )
+}
 
 export default Chat;
