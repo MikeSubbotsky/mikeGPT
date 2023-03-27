@@ -3,7 +3,7 @@ import { Box, CssBaseline } from '@mui/material';
 import './App.css';
 import Chat from './components/Chat';
 import NavBar from './components/NavBar';
-import backgroundImage from './images/background.jpg';
+import backgroundImage from './images/AI_background2.jpg';
 import Description from './components/Description';
 
 function App() {
@@ -14,13 +14,13 @@ function App() {
           minHeight: '100vh',
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'right',
+          display: 'flex',
+          flexDirection: 'column'
         }}>
         <NavBar />
-        <Box sx={{ display: 'flex' }}>
-          <Description />
-          <Chat />
-        </Box>
+        <Description />
+        <Chat />
       </Box>
     </div>
   );
