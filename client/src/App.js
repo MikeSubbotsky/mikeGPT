@@ -4,7 +4,7 @@ import './App.css';
 import Chat from './components/Chat';
 import NavBar from './components/NavBar';
 import backgroundImage from './images/AI_background2.jpg';
-import Description from './components/Description';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -19,8 +19,8 @@ function App() {
           flexDirection: 'column'
         }}>
         <NavBar />
-        <Description />
         <Chat />
+        <Footer />
       </Box>
     </div>
   );
