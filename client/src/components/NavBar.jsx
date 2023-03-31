@@ -35,8 +35,8 @@ const NavBar = () => {
           {({ TransitionProps }) => (
             <Grow {...TransitionProps} style={{ transformOrigin: 'top' }}>
               <Box
-                onMouseEnter={handleToggle}
                 onMouseLeave={handleClose}
+                onTouchStart={handleClose}
                 onBlur={handleBlur}
                 tabIndex={0}
               >
