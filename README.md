@@ -1,5 +1,5 @@
 # mikeGPT
 https://mikegpt-interview.web.app/
 
-## Future plan
+## Future plans
 Implementing LangChain and different chat modes
