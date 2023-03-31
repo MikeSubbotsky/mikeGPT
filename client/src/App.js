@@ -15,6 +15,7 @@ function App() {
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'right',
+          backgroundAttachment: 'fixed',
           display: 'flex',
           flexDirection: 'column'
         }}>

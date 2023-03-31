@@ -37,6 +37,7 @@ const NavBar = () => {
               <Box
                 onMouseLeave={handleClose}
                 onTouchStart={handleClose}
+                onClick={handleClose}
                 onBlur={handleBlur}
                 tabIndex={0}
               >
