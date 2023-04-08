@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
   let conversation;
   let newConversationId = conversationId;
 
-  if (conversationId) {
+  if (conversationId && conversations.has(conversationId)) {
     conversation = conversations.get(conversationId);
   } else {
     newConversationId = uuidv4();
@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
 
   const lastFiveMessages = conversation.slice(-5).join("\n");
   const prompt = botIdentity + lastFiveMessages;
-  console.log(prompt); 
+  console.log(prompt);
   
   const maxRetries = 3;
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
