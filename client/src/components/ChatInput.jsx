@@ -32,7 +32,6 @@ const ChatInput = ({ messages, setMessages, isLoading, setIsLoading, conversatio
         if (!conversationId) {
           setConversationId(response.data.conversationId);
         }
-        setIsLoading(false);
         const messageContent = response.data.content;
         //console.log(messageContent);
         let currentContent = "";
@@ -49,13 +48,14 @@ const ChatInput = ({ messages, setMessages, isLoading, setIsLoading, conversatio
         }};
           setMessages((prevMessages) => [...prevMessages, { role: "assistant", content: "" }]);
           typeMessage(0);
+          setIsLoading(false);
+          setIsTyping(false);
       }
       } catch (error) {
         console.error("Error sending message:", error);
-        //alert("An error occurred while sending your message. Please try again later.");
-      } //try again after
-    setIsLoading(false);
-    setIsTyping(false);
+        alert("An error occurred while sending your message. Please try again later.");
+        setIsLoading(false);
+      } 
   };
 
   const handleKeyPress = (event) => {
