@@ -30,7 +30,7 @@ const Description = () => {
         MikeGPT
       </Typography>
       <Typography variant="body1" gutterBottom align="left">
-        This chatbot can answer any questions related to job interviews. Feel free to ask me anything, and the bot will do its best to provide you with the answer.
+        Discover a game-changer in job interviews with this exceptional chatbot representing me! Equipped to handle any and all interview questions, this AI marvel is eager to show you why I'm your perfect choice. Dive in and experience the future of interviewing today! There's no need to invite me in person—simply ask anything and receive authentic, immediate response!
       </Typography>
     </Box>
   );
